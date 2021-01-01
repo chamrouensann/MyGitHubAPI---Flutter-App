@@ -25,11 +25,47 @@ class _HomePageState extends State<HomePage> {
     var response = await http.get(
       Uri.encodeFull(url),
     );
-    print(response.body);
+//    print(response.body);
+    setState(() {
+      var convertDataJson = json.decode(response.body);
+      data = convertDataJson;
+//      print(data);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: ListView.builder(
+        itemCount: data.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Card(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                ListTile(
+                  leading: Icon(Icons.person),
+                  title: Text(
+                    data[index]['login'],
+                    style: TextStyle(
+                      fontSize: 20.0,
+                    ),
+                  ),
+                  subtitle: Text(
+                    data[index]['url'],
+                    style: TextStyle(
+                      fontSize: 15.0,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 }
